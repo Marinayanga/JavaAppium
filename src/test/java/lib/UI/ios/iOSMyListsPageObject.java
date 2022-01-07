@@ -2,6 +2,7 @@ package lib.UI.ios;
 
 import io.appium.java_client.AppiumDriver;
 import lib.UI.MyListsPageObject;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class iOSMyListsPageObject extends MyListsPageObject {
     static {
@@ -10,7 +11,7 @@ public class iOSMyListsPageObject extends MyListsPageObject {
         ARTICLE_BY_TITLE_TPL = "xpath://XCUIElementTypeStaticText[contains(@name,'{TITLE}')]";
     }
 
-    public iOSMyListsPageObject(AppiumDriver driver) {
+    public iOSMyListsPageObject(RemoteWebDriver driver) {
         super(driver);
     }
 }
