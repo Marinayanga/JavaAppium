@@ -8,16 +8,19 @@ import lib.UI.android.AndroidMyListsPageObject;
 import lib.UI.android.AndroidNavigationUI;
 import lib.UI.ios.iOSMyListsPageObject;
 import lib.UI.ios.iOSNavigationUI;
+import lib.UI.mobile_web.MWArticlePageObject;
+import lib.UI.mobile_web.MWMyListsPageObject;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class MyListsPageObjectFactory {
 
-    public static MyListsPageObject get(RemoteWebDriver driver)
-    {
-        if(Platform.getInstance().isAndroid()){
+    public static MyListsPageObject get(RemoteWebDriver driver) {
+        if (Platform.getInstance().isAndroid()) {
             return new AndroidMyListsPageObject(driver);
-        }else {
+        } else if (Platform.getInstance().isIOS()) {
             return new iOSMyListsPageObject(driver);
+        } else {
+            return new MWMyListsPageObject(driver);
         }
     }
 }

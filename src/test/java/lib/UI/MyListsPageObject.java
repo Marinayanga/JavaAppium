@@ -10,13 +10,19 @@ abstract public class MyListsPageObject extends MainPageObject {
     protected static String
         FOLDER_BY_NAME_TPL,
         SAVED_ARTICLE_SCREEN,
+            REMOVED_FROM_SAVED_BUTTON,
         ARTICLE_BY_TITLE_TPL;
     private static String getFolderXpathByName(String name_of_folder){
         return FOLDER_BY_NAME_TPL.replace("{FOLDER_NAME}", name_of_folder);
     }
     private static String getSavedArticleXpathTitle(String article_title){
+        return REMOVED_FROM_SAVED_BUTTON.replace("{TITLE}", article_title);
+    }
+
+    private static String getRemoveButtonByTitle(String article_title){
         return ARTICLE_BY_TITLE_TPL.replace("{TITLE}", article_title);
     }
+
     public MyListsPageObject(RemoteWebDriver driver) {
         super(driver);
     }
@@ -43,9 +49,24 @@ abstract public class MyListsPageObject extends MainPageObject {
     public void swipeByArticleToDelete(String article_title){
         this.waitForArticleApearByTitle(article_title);
         String article_xpath = getSavedArticleXpathTitle(article_title); //пересмотреть http://webinars-b.stqa.ru/mobile_automation_java/v1_430257/lesson4/06-testSaveFirstArticle.mp4 с 12 минуты
-        this.swipeElementToLeft(article_xpath, "cannot find saved articles");
+
+        if(Platform.getInstance().isAndroid() || Platform.getInstance().isIOS()){
+            this.swipeElementToLeft(article_xpath, "cannot find saved articles");
+        }else {
+            String remove_locator = getRemoveButtonByTitle(article_title);
+            this.waitForElementAndClick(
+                    remove_locator,
+                    "Cannot click button to remove article from saved",
+                    10
+            );
+        }
+
         if(Platform.getInstance().isIOS()){
             this.clickElementToTheRightUpperCorner(article_xpath, "Cannot find saved article");
+        }
+
+        if (Platform.getInstance().isMW()) {
+            driver.navigate().refresh();
         }
         this.waitForArticleDissapearByTitle(article_title);
     }

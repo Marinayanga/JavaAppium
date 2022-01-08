@@ -11,15 +11,19 @@ import org.junit.Test;
 public class MyListsTests extends CoreTestCase {
 
     private static final String name_of_folder = "Learning programming";
+    private static final String
+            login = "marinayanga_98",
+            password = "letmespeakfrommyheart";
+
 
     @Test
-    public void testSaveFirstArticleToMyList() {
+    public void testSaveFirstArticleToMyList() throws InterruptedException {
 
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        SearchPageObject.clickByArticleWithSubstring("bject-oriented programming language");
 
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement();
@@ -30,10 +34,22 @@ public class MyListsTests extends CoreTestCase {
         } else {
             ArticlePageObject.addArticleToMySaved();
         }
+        if (Platform.getInstance().isMW()) {
+            AuthorizationPageObject Auth = new AuthorizationPageObject(driver);
+            Auth.clickAuthButton();
+            Auth.enterLoginData(login, password);
+            Auth.submitForm();
+
+            ArticlePageObject.waitForTitleElement();
+
+            assertEquals("We are not on the same page after login", article_title, ArticlePageObject.getArticleTitle());
+            ArticlePageObject.addArticleToMySaved();
+        }
         ArticlePageObject.closeArticlePopUp();
         ArticlePageObject.closeArticle();
 
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
+        NavigationUI.openNavigation();
         NavigationUI.clickMyLists();
 
         MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
@@ -44,11 +60,11 @@ public class MyListsTests extends CoreTestCase {
         MyListsPageObject.swipeByArticleToDelete(article_title);
 
 
-
     }
-//не отрефакторенный
+
+    //не отрефакторенный
     @Test
-    public void testSaveTwoArticlesinOneFolder() {
+    public void testSaveTwoArticlesinOneFolder() throws InterruptedException {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
@@ -84,7 +100,6 @@ public class MyListsTests extends CoreTestCase {
         }
 
         ArticlePageObject.closeArticle();
-
 
 
         MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
