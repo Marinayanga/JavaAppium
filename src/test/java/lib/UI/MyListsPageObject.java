@@ -22,7 +22,7 @@ abstract public class MyListsPageObject extends MainPageObject {
     }
 
     private static String getRemoveButtonByTitle(String article_title) {
-        return ARTICLE_BY_TITLE_TPL.replace("{TITLE}", article_title);
+        return REMOVED_FROM_SAVED_BUTTON.replace("{TITLE}", article_title);
     }
 
     public MyListsPageObject(RemoteWebDriver driver) {

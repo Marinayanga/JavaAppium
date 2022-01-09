@@ -128,8 +128,6 @@ public class MyListsTests extends CoreTestCase {
         }
         MyListsPageObject.swipeByArticleToDelete(article_title);
         MyListsPageObject.waitForArticleDissapearByTitle(article_title);
-
-
         assertEquals("Wrong article was deleted", "Linkin Park", second_article_title);
 
 
