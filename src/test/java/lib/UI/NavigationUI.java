@@ -1,6 +1,7 @@
 package lib.UI;
 
 import io.appium.java_client.AppiumDriver;
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -13,6 +14,7 @@ abstract public class NavigationUI extends MainPageObject {
         super(driver);
     }
 
+    @Step("Open navigation menu")
     public void openNavigation() throws InterruptedException {
         if (Platform.getInstance().isMW()) {
             this.waitForElementAndClick(OPEN_NAVIGATION, "Cannot find and click open navigation button", 5);
@@ -21,7 +23,7 @@ abstract public class NavigationUI extends MainPageObject {
             System.out.println("Method openNavigation do nothing for platform" + Platform.getInstance().getPlatformVar());
         }
     }
-
+    @Step("click My Lists")
     public void clickMyLists() throws InterruptedException {
         if (Platform.getInstance().isMW()) {
             this.tryClickElementWithFewAttempts(MY_LISTS_LINK,

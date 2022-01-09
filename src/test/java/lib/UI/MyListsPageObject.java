@@ -1,6 +1,7 @@
 package lib.UI;
 
 import io.appium.java_client.AppiumDriver;
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -29,6 +30,7 @@ abstract public class MyListsPageObject extends MainPageObject {
         super(driver);
     }
 
+    @Step("open Folder By Name")
     public void openFolderByName(String name_of_folder) {
         String folder_name_xpath = getFolderXpathByName(name_of_folder);
         this.waitForElementAndClick(folder_name_xpath,
@@ -36,13 +38,14 @@ abstract public class MyListsPageObject extends MainPageObject {
                 5);
     }
 
+    @Step("wait For Article Apear By Title")
     public void waitForArticleApearByTitle(String article_title) {
         String article_xpath = getSavedArticleXpathTitle(article_title);
         this.waitForElementPresent(article_xpath,
                 "Saved article is still not present with title " + article_title,
                 10);
     }
-
+    @Step("wait For Article Dissapear By Title")
     public void waitForArticleDissapearByTitle(String article_title) {
         String article_xpath = getSavedArticleXpathTitle(article_title);
         this.waitForElementNotPresent(article_xpath,
@@ -50,6 +53,7 @@ abstract public class MyListsPageObject extends MainPageObject {
                 5);
     }
 
+    @Step("swipe By Article To Delete")
     public void swipeByArticleToDelete(String article_title) {
         this.waitForArticleApearByTitle(article_title);
         String article_xpath = getSavedArticleXpathTitle(article_title); //пересмотреть http://webinars-b.stqa.ru/mobile_automation_java/v1_430257/lesson4/06-testSaveFirstArticle.mp4 с 12 минуты
@@ -75,6 +79,7 @@ abstract public class MyListsPageObject extends MainPageObject {
         this.waitForArticleDissapearByTitle(article_title);
     }
 
+    @Step("wait For Saved Articles Screen")
     public void waitForSavedArticlesScreen() {
         this.waitForElementPresent(SAVED_ARTICLE_SCREEN, "Can not open saved article screen", 10);
     }

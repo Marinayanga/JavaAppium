@@ -1,6 +1,7 @@
 package lib.UI;
 
 import io.appium.java_client.AppiumDriver;
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -26,14 +27,16 @@ abstract public class ArticlePageObject extends MainPageObject {
         super(driver);
     }
 
+    @Step("Wait for title element")
     public WebElement waitForTitleElement() {
 
         return this.waitForElementPresent(TITLE, "Cannot find article title on page", 15);
 
     }
-
-    public String getArticleTitle() throws InterruptedException {
+    @Step("Get Article Title")
+    public String getArticleTitle() {
         WebElement title_element = waitForTitleElement();
+        screenshot(this.takeScreenShot("article_title"));
         if (Platform.getInstance().isAndroid()) {
             return title_element.getAttribute("text");
         } else if (Platform.getInstance().isIOS()) {
@@ -42,8 +45,9 @@ abstract public class ArticlePageObject extends MainPageObject {
             return title_element.getText();
         }
     }
-
+    @Step("Swipe to footer")
     public void swipeToFooter() {
+        screenshot(this.takeScreenShot("footer"));
         if (Platform.getInstance().isAndroid()) {
             this.swipeUpToFindElement(FOOTER_ELEMENT,
                     "can not find the and of article",
@@ -58,7 +62,7 @@ abstract public class ArticlePageObject extends MainPageObject {
             );
         }
     }
-
+    @Step("Add article to my list")
     public void addArticleToMyList(String name_of_folder) {
         this.waitForElementAndClick(OPTIONS_BUTTON,
                 "Cannot find button to open article options",
@@ -84,7 +88,7 @@ abstract public class ArticlePageObject extends MainPageObject {
                 5);
 
     }
-
+    @Step("Add Article To Used List")
     public void addArticleToUsedList(String name_of_folder) {
 
             this.waitForElementAndClick(OPTIONS_BUTTON,
@@ -93,12 +97,13 @@ abstract public class ArticlePageObject extends MainPageObject {
             this.waitForElementPresent(CHANGE_LANGUAGE,
                     "Cannot find Change language",
                     5);
+        screenshot(this.takeScreenShot("add article to used list"));
             this.waitForElementAndClick(OPTION_ADD_TO_MY_LIST_BUTTON,
                     "Cannot find option to add article options",
                     10);
         }
 
-
+    @Step("Close Article")
     public void closeArticle() {
         if (Platform.getInstance().isIOS() || Platform.getInstance().isAndroid()) {
             this.waitForElementAndClick(CLOSE_ARTICLE_BUTTON,"Cannot close article by X",
@@ -108,7 +113,7 @@ abstract public class ArticlePageObject extends MainPageObject {
         }
 
     }
-
+    @Step("Close Article PopUp")
     public void closeArticlePopUp() {
         if (Platform.getInstance().isIOS()) {
             this.waitForElementAndClick(CLOSE_POP_UP_BUTTON, "Cannot find popup", 10);
@@ -123,19 +128,20 @@ abstract public class ArticlePageObject extends MainPageObject {
         return title_element.getAttribute("text");
     }*/
 
-
+    @Step("Add Article To My Saved")
     public void addArticleToMySaved() throws InterruptedException {
         Thread.sleep(1000);
         if (Platform.getInstance().isMW()) {
             this.removeArticleFromSavedIfItAdded();
         }
+        screenshot(this.takeScreenShot("add article to my saved"));
         this.waitForElementAndClick(OPTION_ADD_TO_MY_LIST_BUTTON,
                 "Cannot find option to add article to reading list",
                 10);
     }
-
+    @Step("Remove Article From Saved If It Added")
     public void removeArticleFromSavedIfItAdded() throws InterruptedException {
-
+        screenshot(this.takeScreenShot("check button to remove form list"));
         if (this.isElementPresent(OPTION_REMOVE_FROM_MY_LIST_BUTTON)) {
             this.waitForElementAndClick(OPTION_REMOVE_FROM_MY_LIST_BUTTON,
                     "cannot click button to remove an article from saved",
@@ -147,6 +153,7 @@ abstract public class ArticlePageObject extends MainPageObject {
         }
 
     }
+    @Step("Wait For AddToMyList Star")
     public void waitForAddToMyListStar() throws InterruptedException {
         Thread.sleep(1000);
         this.waitForElementPresent(OPTION_ADD_TO_MY_LIST_BUTTON, "Cannot find empty star on page", 15);
