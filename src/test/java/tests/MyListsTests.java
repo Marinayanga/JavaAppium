@@ -7,6 +7,7 @@ import lib.UI.factories.MyListsPageObjectFactory;
 import lib.UI.factories.NavigationUIFactory;
 import lib.UI.factories.SearchPageObjectFactory;
 import org.junit.Test;
+import org.omg.CORBA.TIMEOUT;
 
 public class MyListsTests extends CoreTestCase {
 
@@ -106,19 +107,20 @@ public class MyListsTests extends CoreTestCase {
         SearchPageObject.typeSearchLine("Linkin Park");
         SearchPageObject.clickByArticleWithSubstring("rock band");
         ArticlePageObject.waitForTitleElement();
+        ArticlePageObject.waitForAddToMyListStar();
         String second_article_title = ArticlePageObject.getArticleTitle();
-        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
-
         if (Platform.getInstance().isAndroid()) {
-            ArticlePageObject.addArticleToUsedList();
+            ArticlePageObject.addArticleToUsedList(name_of_folder);
         } else {
             ArticlePageObject.addArticleToMySaved();
-        };
-
+        }
 
         ArticlePageObject.closeArticle();
 
+        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
+
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
+        NavigationUI.openNavigation();
         NavigationUI.clickMyLists();
 
         if (Platform.getInstance().isAndroid()) {

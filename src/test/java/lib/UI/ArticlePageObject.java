@@ -85,7 +85,7 @@ abstract public class ArticlePageObject extends MainPageObject {
 
     }
 
-    public void addArticleToUsedList() {
+    public void addArticleToUsedList(String name_of_folder) {
 
             this.waitForElementAndClick(OPTIONS_BUTTON,
                     "Cannot find button to open article options",
@@ -147,5 +147,11 @@ abstract public class ArticlePageObject extends MainPageObject {
         }
 
     }
+    public void waitForAddToMyListStar() throws InterruptedException {
+        Thread.sleep(1000);
+        this.waitForElementPresent(OPTION_ADD_TO_MY_LIST_BUTTON, "Cannot find empty star on page", 15);
+        this.waitForTitleElement();
+    }
+
 
 }
