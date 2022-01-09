@@ -1,6 +1,7 @@
 package lib.UI;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -87,8 +88,15 @@ abstract public class SearchPageObject extends MainPageObject {
     }
 
     public void clearSearchLine() {
-        this.waitForElementAndClick(SEARCH_CLEAR_BUTTON, "Cannot find search clear button", 10);
-    }
+        if(Platform.getInstance().isIOS()|| Platform.getInstance().isAndroid()) {
+            this.waitForElementAndClick(SEARCH_CLEAR_BUTTON,
+                    "Cannot find search clear button",
+                    10);
+        }else{
+            System.out.println("Method clearSearchLine does nothing for platform" + Platform.getInstance().getPlatformVar());
+
+        }
+        }
 
 
 }

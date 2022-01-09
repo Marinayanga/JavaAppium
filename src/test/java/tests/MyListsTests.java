@@ -42,7 +42,9 @@ public class MyListsTests extends CoreTestCase {
 
             ArticlePageObject.waitForTitleElement();
 
-            assertEquals("We are not on the same page after login", article_title, ArticlePageObject.getArticleTitle());
+            assertEquals("We are not on the same page after login",
+                    article_title,
+                    ArticlePageObject.getArticleTitle());
             ArticlePageObject.addArticleToMySaved();
         }
         ArticlePageObject.closeArticlePopUp();
@@ -62,20 +64,18 @@ public class MyListsTests extends CoreTestCase {
 
     }
 
-    //не отрефакторенный
     @Test
     public void testSaveTwoArticlesinOneFolder() throws InterruptedException {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        SearchPageObject.clickByArticleWithSubstring("bject-oriented programming language");
 
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement();
         String article_title = ArticlePageObject.getArticleTitle();
-        String name_of_folder = "Test folder";
-        ArticlePageObject.addArticleToMyList(name_of_folder);
+
 
         if (Platform.getInstance().isAndroid()) {
             ArticlePageObject.addArticleToMyList(name_of_folder);
@@ -83,27 +83,40 @@ public class MyListsTests extends CoreTestCase {
             ArticlePageObject.addArticleToMySaved();
         }
 
-        ArticlePageObject.closeArticlePopUp();
+        if (Platform.getInstance().isMW()) {
+            AuthorizationPageObject Auth = new AuthorizationPageObject(driver);
+            Auth.clickAuthButton();
+            Auth.enterLoginData(login, password);
+            Auth.submitForm();
+
+            ArticlePageObject.waitForTitleElement();
+
+            assertEquals("We are not on the same page after login", article_title, ArticlePageObject.getArticleTitle());
+            ArticlePageObject.addArticleToMySaved();
+        }
+
+        ArticlePageObject.closeArticlePopUp(); //tolko dlya ios
         ArticlePageObject.closeArticle();
+
+        //добавляем вторую статью
 
         SearchPageObject.initSearchInput();
         SearchPageObject.clearSearchLine();
 
         SearchPageObject.typeSearchLine("Linkin Park");
-        SearchPageObject.clickByArticleWithSubstring("American rock band");
+        SearchPageObject.clickByArticleWithSubstring("rock band");
         ArticlePageObject.waitForTitleElement();
         String second_article_title = ArticlePageObject.getArticleTitle();
+        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
+
         if (Platform.getInstance().isAndroid()) {
             ArticlePageObject.addArticleToUsedList();
         } else {
             ArticlePageObject.addArticleToMySaved();
-        }
+        };
+
 
         ArticlePageObject.closeArticle();
-
-
-        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
-
 
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyLists();

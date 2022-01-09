@@ -13,19 +13,22 @@ abstract public class NavigationUI extends MainPageObject {
         super(driver);
     }
 
-    public void openNavigation() {
+    public void openNavigation() throws InterruptedException {
         if (Platform.getInstance().isMW()) {
-            this.waitForElementAndClick(OPEN_NAVIGATION, "Cannot find and click open navigation button", 5);}
-            else {
+            this.waitForElementAndClick(OPEN_NAVIGATION, "Cannot find and click open navigation button", 5);
+            Thread.sleep(100);
+        } else {
             System.out.println("Method openNavigation do nothing for platform" + Platform.getInstance().getPlatformVar());
         }
     }
 
     public void clickMyLists() throws InterruptedException {
         if (Platform.getInstance().isMW()) {
-            this.tryClickElementWithFewAttempts(MY_LISTS_LINK,"Cannot find navigation button to My List",5 );
+            this.tryClickElementWithFewAttempts(MY_LISTS_LINK,
+                    "Cannot find navigation button to My List",
+                    5);
             Thread.sleep(1000);
-        }else {
+        } else {
             this.waitForElementAndClick(MY_LISTS_LINK,
                     "Cannot find navigation button to My List",
                     15);

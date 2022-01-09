@@ -27,10 +27,12 @@ abstract public class ArticlePageObject extends MainPageObject {
     }
 
     public WebElement waitForTitleElement() {
+
         return this.waitForElementPresent(TITLE, "Cannot find article title on page", 15);
+
     }
 
-    public String getArticleTitle() {
+    public String getArticleTitle() throws InterruptedException {
         WebElement title_element = waitForTitleElement();
         if (Platform.getInstance().isAndroid()) {
             return title_element.getAttribute("text");
@@ -84,16 +86,18 @@ abstract public class ArticlePageObject extends MainPageObject {
     }
 
     public void addArticleToUsedList() {
-        this.waitForElementAndClick(OPTIONS_BUTTON,
-                "Cannot find button to open article options",
-                10);
-        this.waitForElementPresent(CHANGE_LANGUAGE,
-                "Cannot find Change language",
-                5);
-        this.waitForElementAndClick(OPTION_ADD_TO_MY_LIST_BUTTON,
-                "Cannot find option to add article options",
-                10);
-    }
+
+            this.waitForElementAndClick(OPTIONS_BUTTON,
+                    "Cannot find button to open article options",
+                    10);
+            this.waitForElementPresent(CHANGE_LANGUAGE,
+                    "Cannot find Change language",
+                    5);
+            this.waitForElementAndClick(OPTION_ADD_TO_MY_LIST_BUTTON,
+                    "Cannot find option to add article options",
+                    10);
+        }
+
 
     public void closeArticle() {
         if (Platform.getInstance().isIOS() || Platform.getInstance().isAndroid()) {
@@ -120,16 +124,22 @@ abstract public class ArticlePageObject extends MainPageObject {
     }*/
 
 
-    public void addArticleToMySaved() {
+    public void addArticleToMySaved() throws InterruptedException {
+        Thread.sleep(1000);
         if (Platform.getInstance().isMW()) {
             this.removeArticleFromSavedIfItAdded();
         }
-        this.waitForElementAndClick(OPTION_ADD_TO_MY_LIST_BUTTON, "Cannot find option to add article to reading list", 10);
+        this.waitForElementAndClick(OPTION_ADD_TO_MY_LIST_BUTTON,
+                "Cannot find option to add article to reading list",
+                10);
     }
 
-    public void removeArticleFromSavedIfItAdded() {
+    public void removeArticleFromSavedIfItAdded() throws InterruptedException {
+
         if (this.isElementPresent(OPTION_REMOVE_FROM_MY_LIST_BUTTON)) {
-            this.waitForElementAndClick(OPTION_REMOVE_FROM_MY_LIST_BUTTON, "cannot click button to remove an article from saved", 2);
+            this.waitForElementAndClick(OPTION_REMOVE_FROM_MY_LIST_BUTTON,
+                    "cannot click button to remove an article from saved",
+                    2);
             this.waitForElementPresent(
                     OPTION_ADD_TO_MY_LIST_BUTTON,
                     "Cannot find button to add an article to saved list after removing it from this list", 2);
